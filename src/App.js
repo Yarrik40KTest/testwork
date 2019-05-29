@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import {bindActionCreators} from "redux/es/redux";
+import {requestTest,select} from "./Action/action"
+import PropTypes from 'prop-types';
+import {connect} from "react-redux";
+import Filter from "./Components/Filter";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+    constructor(props){
+        super(props)
+        this.setState={
+            tests:PropTypes.array,
+        }
+    }
+    componentDidMount() {
+        this.props.requestTest();
+    }
+
+    render() {
+        return (
+            <div className="App">
+                <Filter/>
+            </div>
+        );
+    }
 }
 
-export default App;
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({select: select,requestTest: requestTest},dispatch);
+}
+
+export default connect(null, matchDispatchToProps)(App)
